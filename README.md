@@ -17,5 +17,5 @@ Money-Transfer-System (MTS) to transfer amount between Account(s). </br>
 ![image](https://user-images.githubusercontent.com/42522100/212762794-4d663b08-bdc7-4b55-b032-1a60064dca10.png)
 </br>
 # Entity Relationship Diagram
-![image](https://user-images.githubusercontent.com/42522100/212762645-a9760315-fe47-4c86-b840-8f0ecec07d6b.png)
+![image](https://user-images.githubusercontent.com/42522100/214279137-ba221aa9-1d41-48c1-b13d-c693f2fcd0ad.png)
 </br>
