@@ -46,6 +46,6 @@ public class Account {
 	@JoinColumn(name = "FK_BANK")
 	private Bank bank;
 
-	@OneToMany(mappedBy = "account")
+	@OneToMany(mappedBy = "user")
 	private List<Transaction> transactions;
 }

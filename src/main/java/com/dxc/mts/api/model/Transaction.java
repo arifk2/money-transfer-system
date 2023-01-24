@@ -54,4 +54,8 @@ public class Transaction {
 	@JoinColumn(name = "FK_ACCOUNT")
 	private Account account;
 
+	@ManyToOne
+	@JoinColumn(name = "FK_USER")
+	private User user;
+
 }
