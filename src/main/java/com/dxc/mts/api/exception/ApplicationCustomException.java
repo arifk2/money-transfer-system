@@ -5,16 +5,15 @@ package com.dxc.mts.api.exception;
  * @author mkhan339
  *
  */
-public class UserNotFoundException extends Exception {
-	private static final long serialVersionUID = 8140630514223432904L;
-
+public class ApplicationCustomException extends Exception {
+	private static final long serialVersionUID = 1L;
 	private String errorMessage;
 
-	public UserNotFoundException() {
+	public ApplicationCustomException() {
 		super();
 	}
 
-	public UserNotFoundException(String errorMessage) {
+	public ApplicationCustomException(String errorMessage) {
 		super(errorMessage);
 		this.errorMessage = errorMessage;
 	}
