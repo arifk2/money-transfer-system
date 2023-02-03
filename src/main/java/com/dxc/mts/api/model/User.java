@@ -4,11 +4,15 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,7 +33,7 @@ public class User {
 	private Long userId;
 
 	@Column(name = "USERNAME")
-	private String userame;
+	private String username;
 
 	@Column(name = "PASSWORD")
 	private String password;
@@ -40,15 +44,19 @@ public class User {
 	@Column(name = "PHONE_NUMBER")
 	private String phoneNumber;
 
-	@OneToMany(mappedBy = "user")
+	@JsonInclude(Include.NON_NULL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Account> accounts;
 
-	@OneToOne(mappedBy = "user")
+	@JsonInclude(Include.NON_NULL)
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private Address address;
 
-	@OneToMany(mappedBy = "user")
+	@JsonInclude(Include.NON_NULL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<EventLog> eventLog;
-	
-	@OneToMany(mappedBy = "account")
+
+	@JsonInclude(Include.NON_NULL)
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
 	private List<Transaction> transactions;
 }

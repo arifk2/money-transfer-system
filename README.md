@@ -19,3 +19,7 @@ Money-Transfer-System (MTS) to transfer amount between Account(s). </br>
 # Entity Relationship Diagram
 ![image](https://user-images.githubusercontent.com/42522100/214279137-ba221aa9-1d41-48c1-b13d-c693f2fcd0ad.png)
 </br>
+# Important URLS: </br>
+Application base url : http://localhost:8080 </br>
+Swagger: http://localhost:8080/api/swagger-ui/index.html#/ </br>
+Actuator: http://localhost:8080/api/actuator/health </br>
