@@ -21,4 +21,6 @@ public interface UserService {
 	public User getUserById(long id) throws NoSuchMessageException, UserNotFoundException;
 
 	public List<User> getUsers();
+
+	public User updateUser(User user) throws NoSuchMessageException, UserNotFoundException;
 }

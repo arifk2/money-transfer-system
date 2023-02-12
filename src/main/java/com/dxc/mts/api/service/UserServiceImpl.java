@@ -63,4 +63,14 @@ public class UserServiceImpl implements UserService {
 		List<User> users = userRepository.findAll();
 		return users;
 	}
+
+	@Override
+	public User updateUser(User user) throws NoSuchMessageException, UserNotFoundException {
+		User userFound = getUserById(user.getUserId());
+		userFound.setEmailAddress(user.getEmailAddress());
+		userFound.setPassword(bcryptPasswordEncoder.encode(user.getPassword()));
+		userFound.setPhoneNumber(user.getPhoneNumber());
+		
+		return userRepository.save(userFound);
+	}
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -95,6 +96,27 @@ public class UserController {
 		} else {
 			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.NOT_FOUND.value(),
 					SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PutMapping("/update")
+	public ResponseEntity<?> updateUser(@RequestBody User user)
+			throws NoSuchMessageException, ApplicationCustomException {
+		User userResponse;
+		try {
+			userResponse = userService.updateUser(user);
+			if (userResponse != null) {
+				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
+						source.getMessage("mts.user.update.message", null, null), userResponse), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
+						SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.BAD_REQUEST);
+			}
+		} catch (UserNotFoundException e) {
+			return new ResponseEntity<Object>(
+					new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
+							source.getMessage("mts.user.not.found.message", null, null)),
+					HttpStatus.NOT_FOUND);
 		}
 	}
 }
