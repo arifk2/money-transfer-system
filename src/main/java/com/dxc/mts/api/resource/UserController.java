@@ -76,8 +76,8 @@ public class UserController {
 			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
 					source.getMessage("mts.user.success.message", null, null), userResponse), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
-					SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.NOT_FOUND.value(),
+					SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.NOT_FOUND);
 		}
 	}
 
