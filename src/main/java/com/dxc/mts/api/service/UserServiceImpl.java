@@ -1,5 +1,6 @@
 package com.dxc.mts.api.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,11 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException(messageSource.getMessage("mts.user.not.found.message", null, null));
 		}
 		return user.get();
+	}
+
+	@Override
+	public List<User> getUsers() {
+		List<User> users = userRepository.findAll();
+		return users;
 	}
 }

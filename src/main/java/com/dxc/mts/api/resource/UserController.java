@@ -1,5 +1,7 @@
 package com.dxc.mts.api.resource;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
@@ -76,6 +78,23 @@ public class UserController {
 		} else {
 			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
 					SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	/**
+	 * This method is created to get list of users
+	 * 
+	 * @return response entity object
+	 */
+	@GetMapping
+	public ResponseEntity<?> getUsers() {
+		final List<User> usersResponse = userService.getUsers();
+		if (usersResponse != null) {
+			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
+					source.getMessage("mts.user.success.message", null, null), usersResponse), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.NOT_FOUND.value(),
+					SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.NOT_FOUND);
 		}
 	}
 }

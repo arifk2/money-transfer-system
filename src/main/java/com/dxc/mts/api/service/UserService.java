@@ -1,5 +1,7 @@
 package com.dxc.mts.api.service;
 
+import java.util.List;
+
 import org.springframework.context.NoSuchMessageException;
 
 import com.dxc.mts.api.exception.UserNotFoundException;
@@ -17,4 +19,6 @@ public interface UserService {
 	public User findByEmailAddress(String emailAddress);
 
 	public User getUserById(long id) throws NoSuchMessageException, UserNotFoundException;
+
+	public List<User> getUsers();
 }
