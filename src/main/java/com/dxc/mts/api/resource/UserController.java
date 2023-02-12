@@ -99,6 +99,13 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * 
+	 * @param user holds the information of the user
+	 * @return updated user
+	 * @throws NoSuchMessageException     when no key is present
+	 * @throws ApplicationCustomException application specific exception
+	 */
 	@PutMapping("/update")
 	public ResponseEntity<?> updateUser(@RequestBody User user)
 			throws NoSuchMessageException, ApplicationCustomException {
