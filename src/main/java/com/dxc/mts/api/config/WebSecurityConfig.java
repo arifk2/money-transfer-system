@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// actuator
 			"/actuator/**",
 			// other public end-points of your API may be appended to this array
-			"/authenticate", "/users/add" };
+			"/authenticate", "/users/add", "/banks/add" };
 
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -18,40 +18,34 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dxc.mts.api.dto.BaseResponse;
 import com.dxc.mts.api.enums.SecurityError;
 import com.dxc.mts.api.exception.ApplicationCustomException;
-import com.dxc.mts.api.exception.UserNotFoundException;
-import com.dxc.mts.api.model.User;
-import com.dxc.mts.api.service.UserService;
+import com.dxc.mts.api.exception.BankNotFoundException;
+import com.dxc.mts.api.model.Bank;
+import com.dxc.mts.api.service.BankService;
 
-/**
- * 
- * @author mkhan339
- *
- */
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/banks")
+public class BankController {
 
 	@Autowired
 	private MessageSource source;
 
 	@Autowired
-	private UserService userService;
+	private BankService bankService;
 
 	/**
-	 * This method is created to add user in the database.
 	 * 
-	 * @param user holds the user information
+	 * @param bank holds the bank information
 	 * @return response entity object
 	 * @throws NoSuchMessageException     when no key is present
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@PostMapping("/add")
-	public ResponseEntity<?> saveUser(@RequestBody User user)
+	public ResponseEntity<?> saveBank(@RequestBody Bank bank)
 			throws NoSuchMessageException, ApplicationCustomException {
-		final User userResponse = userService.saveUser(user);
-		if (userResponse != null) {
+		final Bank bankResponse = bankService.saveBank(bank);
+		if (bankResponse != null) {
 			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.CREATED.value(),
-					source.getMessage("mts.success.message", null, null), userResponse), HttpStatus.CREATED);
+					source.getMessage("mts.success.message", null, null), bankResponse), HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
 					SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.BAD_REQUEST);
@@ -59,44 +53,44 @@ public class UserController {
 	}
 
 	/**
-	 * This method is created to get the user information based on the user id
+	 * This method is created to get the bank information based on the bank id
 	 * 
-	 * @param id user id of the user
+	 * @param id bank id of the bank
 	 * @return response entity object
 	 * @throws NoSuchMessageException     when no key is present
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getUser(@PathVariable long id) throws NoSuchMessageException, ApplicationCustomException {
-		User userResponse;
+	public ResponseEntity<?> getBank(@PathVariable long id) throws NoSuchMessageException, ApplicationCustomException {
+		Bank bankResponse;
 		try {
-			userResponse = userService.getUserById(id);
-			if (userResponse != null) {
+			bankResponse = bankService.getBankById(id);
+			if (bankResponse != null) {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
-						source.getMessage("mts.success.message", null, null), userResponse), HttpStatus.OK);
+						source.getMessage("mts.success.message", null, null), bankResponse), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.NOT_FOUND.value(),
 						SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.NOT_FOUND);
 			}
-		} catch (UserNotFoundException e) {
+		} catch (BankNotFoundException e) {
 			return new ResponseEntity<Object>(
 					new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
-							source.getMessage("mts.user.not.found.message", null, null)),
+							source.getMessage("mts.bank.not.found.message", null, null)),
 					HttpStatus.NOT_FOUND);
 		}
 	}
 
 	/**
-	 * This method is created to get list of users
+	 * This method is created to get list of banks
 	 * 
 	 * @return response entity object
 	 */
 	@GetMapping
-	public ResponseEntity<?> getUsers() {
-		final List<User> usersResponse = userService.getUsers();
-		if (usersResponse != null) {
+	public ResponseEntity<?> getBanks() {
+		final List<Bank> bankResponse = bankService.getBanks();
+		if (bankResponse != null) {
 			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
-					source.getMessage("mts.success.message", null, null), usersResponse), HttpStatus.OK);
+					source.getMessage("mts.success.message", null, null), bankResponse), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.NOT_FOUND.value(),
 					SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.NOT_FOUND);
@@ -105,17 +99,17 @@ public class UserController {
 
 	/**
 	 * 
-	 * @param user holds the information of the user
-	 * @return updated user
+	 * @param bank holds the information of the bank
+	 * @return updated bank
 	 * @throws NoSuchMessageException     when no key is present
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@PutMapping("/update")
-	public ResponseEntity<?> updateUser(@RequestBody User user)
+	public ResponseEntity<?> updateBank(@RequestBody Bank bank)
 			throws NoSuchMessageException, ApplicationCustomException {
-		User userResponse;
+		Bank userResponse;
 		try {
-			userResponse = userService.updateUser(user);
+			userResponse = bankService.updateBank(bank);
 			if (userResponse != null) {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
 						source.getMessage("mts.update.message", null, null), userResponse), HttpStatus.OK);
@@ -123,10 +117,10 @@ public class UserController {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
 						SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.BAD_REQUEST);
 			}
-		} catch (UserNotFoundException e) {
+		} catch (BankNotFoundException e) {
 			return new ResponseEntity<Object>(
 					new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
-							source.getMessage("mts.user.not.found.message", null, null)),
+							source.getMessage("mts.bank.not.found.message", null, null)),
 					HttpStatus.NOT_FOUND);
 		}
 	}
