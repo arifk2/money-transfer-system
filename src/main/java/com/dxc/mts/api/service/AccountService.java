@@ -1,5 +1,7 @@
 package com.dxc.mts.api.service;
 
+import java.util.List;
+
 import org.springframework.context.NoSuchMessageException;
 
 import com.dxc.mts.api.dto.AccountDTO;
@@ -13,5 +15,7 @@ public interface AccountService {
 			throws NoSuchMessageException, UserNotFoundException, BankNotFoundException;
 
 	public Account getByAccountNumber(Long accountNumber);
+
+	public List<AccountDTO> getAccounts();
 
 }

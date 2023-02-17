@@ -1,5 +1,7 @@
 package com.dxc.mts.api.resource;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,8 +49,10 @@ public class AccountController {
 		try {
 			accountResponse = accounService.saveAccount(accountDTO);
 			if (accountResponse != null) {
-				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.CREATED.value(),
-						source.getMessage("mts.success.message", null, null), accountResponse), HttpStatus.CREATED);
+				return new ResponseEntity<Object>(
+						new BaseResponse(HttpStatus.CREATED.value(),
+								source.getMessage("mts.success.message", null, null), accountResponse),
+						HttpStatus.CREATED);
 			} else {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
 						SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.BAD_REQUEST);
@@ -62,6 +67,23 @@ public class AccountController {
 					new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
 							source.getMessage("mts.bank.not.found.message", null, null)),
 					HttpStatus.NOT_FOUND);
+		}
+	}
+
+	/**
+	 * This method is created to get list of accounts
+	 * 
+	 * @return response entity object
+	 */
+	@GetMapping
+	public ResponseEntity<?> getAccounts() {
+		final List<AccountDTO> accountResponse = accounService.getAccounts();
+		if (accountResponse != null) {
+			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
+					source.getMessage("mts.success.message", null, null), accountResponse), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.NOT_FOUND.value(),
+					SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.NOT_FOUND);
 		}
 	}
 }

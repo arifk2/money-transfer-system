@@ -1,5 +1,8 @@
 package com.dxc.mts.api.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Service;
@@ -47,6 +50,19 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Account getByAccountNumber(Long accountNumber) {
 		return accountRepository.findByAccountNumber(accountNumber);
+	}
+
+	@Override
+	public List<AccountDTO> getAccounts() {
+		List<AccountDTO> accountsDtoList = new ArrayList<>();
+		List<Account> accounts = accountRepository.findAll();
+
+		if (accounts != null && accounts.size() != 0) {
+			for (Account account : accounts) {
+				accountsDtoList.add(new AccountDTO(account));
+			}
+		}
+		return accountsDtoList;
 	}
 
 }
