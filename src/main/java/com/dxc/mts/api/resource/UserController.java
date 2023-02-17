@@ -59,7 +59,7 @@ public class UserController {
 	}
 
 	/**
-	 * This method is created to get the user information based on the user id
+	 * This method is to get the user information based on the user id
 	 * 
 	 * @param id user id of the user
 	 * @return response entity object

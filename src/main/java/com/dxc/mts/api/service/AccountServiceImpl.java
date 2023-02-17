@@ -2,13 +2,16 @@ package com.dxc.mts.api.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Service;
 
 import com.dxc.mts.api.dao.AccountRepository;
 import com.dxc.mts.api.dto.AccountDTO;
+import com.dxc.mts.api.exception.AccountNotFoundException;
 import com.dxc.mts.api.exception.BankNotFoundException;
 import com.dxc.mts.api.exception.UserNotFoundException;
 import com.dxc.mts.api.model.Account;
@@ -26,6 +29,9 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	private AccountRepository accountRepository;
+
+	@Autowired
+	private MessageSource messageSource;
 
 	@Override
 	public Account saveAccount(AccountDTO accountDTO)
@@ -63,6 +69,16 @@ public class AccountServiceImpl implements AccountService {
 			}
 		}
 		return accountsDtoList;
+	}
+
+	@Override
+	public AccountDTO getAccountById(long id) throws NoSuchMessageException, AccountNotFoundException {
+		Optional<Account> accounts = accountRepository.findByAccountId(id);
+		if (accounts.isEmpty()) {
+			throw new AccountNotFoundException(messageSource.getMessage("mts.account.not.found.message", null, null));
+		} else {
+			return new AccountDTO(accounts.get());
+		}
 	}
 
 }
