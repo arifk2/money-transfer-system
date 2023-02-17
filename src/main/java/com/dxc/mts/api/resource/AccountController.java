@@ -1,0 +1,67 @@
+package com.dxc.mts.api.resource;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dxc.mts.api.dto.AccountDTO;
+import com.dxc.mts.api.dto.BaseResponse;
+import com.dxc.mts.api.enums.SecurityError;
+import com.dxc.mts.api.exception.ApplicationCustomException;
+import com.dxc.mts.api.exception.BankNotFoundException;
+import com.dxc.mts.api.exception.UserNotFoundException;
+import com.dxc.mts.api.model.Account;
+import com.dxc.mts.api.service.AccountService;
+
+@RestController
+@RequestMapping("/accounts")
+public class AccountController {
+
+	@Autowired
+	private MessageSource source;
+
+	@Autowired
+	private AccountService accounService;
+
+	/**
+	 * This method is created to add account
+	 * 
+	 * @param accountDTO holds the information of the accountDTO
+	 * @return
+	 * @throws NoSuchMessageException     when no key is present
+	 * @throws ApplicationCustomException application specific exception
+	 */
+	@PostMapping("/add")
+	public ResponseEntity<?> saveAccount(@Valid @RequestBody AccountDTO accountDTO)
+			throws NoSuchMessageException, ApplicationCustomException {
+		Account accountResponse = null;
+		try {
+			accountResponse = accounService.saveAccount(accountDTO);
+			if (accountResponse != null) {
+				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.CREATED.value(),
+						source.getMessage("mts.success.message", null, null), accountResponse), HttpStatus.CREATED);
+			} else {
+				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
+						SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.BAD_REQUEST);
+			}
+		} catch (UserNotFoundException e) {
+			return new ResponseEntity<Object>(
+					new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
+							source.getMessage("mts.user.not.found.message", null, null)),
+					HttpStatus.NOT_FOUND);
+		} catch (BankNotFoundException e) {
+			return new ResponseEntity<Object>(
+					new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
+							source.getMessage("mts.bank.not.found.message", null, null)),
+					HttpStatus.NOT_FOUND);
+		}
+	}
+}

@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -39,14 +41,17 @@ public class Account {
 	@Column(name = "AVAILABLE_BALANCE")
 	private Double availableBalance;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FK_USER")
 	private User user;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FK_BANK")
 	private Bank bank;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Transaction> transactions;
 }
