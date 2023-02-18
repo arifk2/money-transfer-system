@@ -81,4 +81,20 @@ public class AccountServiceImpl implements AccountService {
 		}
 	}
 
+	@Override
+	public List<AccountDTO> getAccountByUserId(long id) throws NoSuchMessageException, AccountNotFoundException {
+		List<Account> accounts = accountRepository.findByAccountUserId(id);
+		List<AccountDTO> accountsDtoList = new ArrayList<>();
+		if (accounts.isEmpty()) {
+			throw new AccountNotFoundException(messageSource.getMessage("mts.account.not.found.message", null, null));
+		} else {
+			if (accounts != null && accounts.size() != 0) {
+				for (Account account : accounts) {
+					accountsDtoList.add(new AccountDTO(account));
+				}
+			}
+			return accountsDtoList;
+		}
+	}
+
 }

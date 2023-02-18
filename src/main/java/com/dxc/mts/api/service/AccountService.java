@@ -21,4 +21,6 @@ public interface AccountService {
 
 	public AccountDTO getAccountById(long id) throws NoSuchMessageException, AccountNotFoundException;
 
+	public List<AccountDTO> getAccountByUserId(long id) throws NoSuchMessageException, AccountNotFoundException;
+
 }

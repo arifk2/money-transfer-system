@@ -97,12 +97,41 @@ public class AccountController {
 	 * @throws NoSuchMessageException     when no key is present
 	 * @throws ApplicationCustomException application specific exception
 	 */
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getAccount(@PathVariable long id)
+	@GetMapping("/account/{id}")
+	public ResponseEntity<?> getAccountById(@PathVariable long id)
 			throws NoSuchMessageException, ApplicationCustomException {
 		AccountDTO accountDTO = null;
 		try {
 			accountDTO = accountService.getAccountById(id);
+			if (accountDTO != null) {
+				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
+						source.getMessage("mts.success.message", null, null), accountDTO), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.NOT_FOUND.value(),
+						SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.NOT_FOUND);
+			}
+		} catch (AccountNotFoundException e) {
+			return new ResponseEntity<Object>(
+					new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
+							source.getMessage("mts.account.not.found.message", null, null)),
+					HttpStatus.NOT_FOUND);
+		}
+	}
+
+	/**
+	 * This method is created to get the account information based on the user id
+	 * 
+	 * @param id holds the information of the user id
+	 * @return response entity object
+	 * @throws NoSuchMessageException     when no key is present
+	 * @throws ApplicationCustomException application specific exception
+	 */
+	@GetMapping("/user/{id}")
+	public ResponseEntity<?> getAccountByUser(@PathVariable long id)
+			throws NoSuchMessageException, ApplicationCustomException {
+		List<AccountDTO> accountDTO = null;
+		try {
+			accountDTO = accountService.getAccountByUserId(id);
 			if (accountDTO != null) {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
 						source.getMessage("mts.success.message", null, null), accountDTO), HttpStatus.OK);
