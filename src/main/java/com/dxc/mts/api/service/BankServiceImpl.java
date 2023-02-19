@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.dxc.mts.api.dao.BankRepository;
 import com.dxc.mts.api.exception.BankNotFoundException;
 import com.dxc.mts.api.model.Bank;
-import com.dxc.mts.api.model.User;
 
 @Service
 public class BankServiceImpl implements BankService {
@@ -49,7 +48,7 @@ public class BankServiceImpl implements BankService {
 	public Bank getBankById(long id) throws NoSuchMessageException, BankNotFoundException {
 		Optional<Bank> user = bankRepository.findById(id);
 		if (user.isEmpty()) {
-			throw new BankNotFoundException(messageSource.getMessage("mts.user.not.found.message", null, null));
+			throw new BankNotFoundException(messageSource.getMessage("mts.bank.not.found.message", null, null));
 		}
 		return user.get();
 	}
