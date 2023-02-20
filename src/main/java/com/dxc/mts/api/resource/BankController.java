@@ -22,6 +22,8 @@ import com.dxc.mts.api.exception.BankNotFoundException;
 import com.dxc.mts.api.model.Bank;
 import com.dxc.mts.api.service.BankService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/banks")
 public class BankController {
@@ -33,6 +35,7 @@ public class BankController {
 	private BankService bankService;
 
 	/**
+	 * This method is created to save the bank
 	 * 
 	 * @param bank holds the bank information
 	 * @return response entity object
@@ -40,6 +43,7 @@ public class BankController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@PostMapping("/add")
+	@Operation(summary = "Api to save the bank")
 	public ResponseEntity<?> saveBank(@RequestBody Bank bank)
 			throws NoSuchMessageException, ApplicationCustomException {
 		final Bank bankResponse = bankService.saveBank(bank);
@@ -61,6 +65,7 @@ public class BankController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@GetMapping("/{id}")
+	@Operation(summary = "Api to get the bank information based on the bank id")
 	public ResponseEntity<?> getBank(@PathVariable long id) throws NoSuchMessageException, ApplicationCustomException {
 		Bank bankResponse;
 		try {
@@ -86,6 +91,7 @@ public class BankController {
 	 * @return response entity object
 	 */
 	@GetMapping
+	@Operation(summary = "Api to get list of banks")
 	public ResponseEntity<?> getBanks() {
 		final List<Bank> bankResponse = bankService.getBanks();
 		if (bankResponse != null) {
@@ -98,6 +104,7 @@ public class BankController {
 	}
 
 	/**
+	 * This method is created to update the bank
 	 * 
 	 * @param bank holds the information of the bank
 	 * @return updated bank
@@ -105,6 +112,7 @@ public class BankController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@PutMapping("/update")
+	@Operation(summary = "Api to update the bank")
 	public ResponseEntity<?> updateBank(@RequestBody Bank bank)
 			throws NoSuchMessageException, ApplicationCustomException {
 		Bank userResponse;

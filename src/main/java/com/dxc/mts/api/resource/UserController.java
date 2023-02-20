@@ -22,6 +22,8 @@ import com.dxc.mts.api.exception.UserNotFoundException;
 import com.dxc.mts.api.model.User;
 import com.dxc.mts.api.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 /**
  * 
  * @author mkhan339
@@ -46,6 +48,7 @@ public class UserController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@PostMapping("/add")
+	@Operation(summary = "Api to add new user")
 	public ResponseEntity<?> saveUser(@RequestBody User user)
 			throws NoSuchMessageException, ApplicationCustomException {
 		final User userResponse = userService.saveUser(user);
@@ -67,6 +70,7 @@ public class UserController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@GetMapping("/{id}")
+	@Operation(summary = "Api to the user information based on the user id")
 	public ResponseEntity<?> getUser(@PathVariable long id) throws NoSuchMessageException, ApplicationCustomException {
 		User userResponse;
 		try {
@@ -92,6 +96,7 @@ public class UserController {
 	 * @return response entity object
 	 */
 	@GetMapping
+	@Operation(summary = "Api to get list of users")
 	public ResponseEntity<?> getUsers() {
 		final List<User> usersResponse = userService.getUsers();
 		if (usersResponse != null) {
@@ -104,6 +109,7 @@ public class UserController {
 	}
 
 	/**
+	 * This method is created to update the user information
 	 * 
 	 * @param user holds the information of the user
 	 * @return updated user
@@ -111,6 +117,7 @@ public class UserController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@PutMapping("/update")
+	@Operation(summary = "Api to update user details")
 	public ResponseEntity<?> updateUser(@RequestBody User user)
 			throws NoSuchMessageException, ApplicationCustomException {
 		User userResponse;

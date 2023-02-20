@@ -26,6 +26,8 @@ import com.dxc.mts.api.exception.UserNotFoundException;
 import com.dxc.mts.api.model.Account;
 import com.dxc.mts.api.service.AccountService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
@@ -45,6 +47,7 @@ public class AccountController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@PostMapping("/add")
+	@Operation(summary = "Api to add account")
 	public ResponseEntity<?> saveAccount(@Valid @RequestBody AccountDTO accountDTO)
 			throws NoSuchMessageException, ApplicationCustomException {
 		Account accountResponse = null;
@@ -78,6 +81,7 @@ public class AccountController {
 	 * @return response entity object
 	 */
 	@GetMapping
+	@Operation(summary = "Api to get list of accounts")
 	public ResponseEntity<?> getAccounts() {
 		final List<AccountDTO> accountResponse = accountService.getAccounts();
 		if (accountResponse != null) {
@@ -90,7 +94,7 @@ public class AccountController {
 	}
 
 	/**
-	 * This method is created to get the account information based on the account id
+	 * This method is created to get the account information based on the account id and account number
 	 * 
 	 * @param id account id of the of the account
 	 * @return response entity object
@@ -98,6 +102,7 @@ public class AccountController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@GetMapping("/account/{id}")
+	@Operation(summary = "Api to get the account information based on the account id and account number")
 	public ResponseEntity<?> getAccountById(@PathVariable long id)
 			throws NoSuchMessageException, ApplicationCustomException {
 		AccountDTO accountDTO = null;
@@ -127,6 +132,7 @@ public class AccountController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@GetMapping("/user/{id}")
+	@Operation(summary = "Api to get the account information based on the user id")
 	public ResponseEntity<?> getAccountByUser(@PathVariable long id)
 			throws NoSuchMessageException, ApplicationCustomException {
 		List<AccountDTO> accountDTO = null;
@@ -156,6 +162,7 @@ public class AccountController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@GetMapping("/bank/{id}")
+	@Operation(summary = "Api to get the account information based on the bank id")
 	public ResponseEntity<?> getAccountByBank(@PathVariable long id)
 			throws NoSuchMessageException, ApplicationCustomException {
 		List<AccountDTO> accountDTO = null;
@@ -175,4 +182,6 @@ public class AccountController {
 					HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	
 }

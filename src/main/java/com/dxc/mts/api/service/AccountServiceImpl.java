@@ -55,7 +55,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Account getByAccountNumber(Long accountNumber) {
-		return accountRepository.findByAccountNumber(accountNumber);
+		return accountRepository.findByAccountNumber(accountNumber).get();
 	}
 
 	@Override
@@ -72,8 +72,11 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public AccountDTO getAccountById(long id) throws NoSuchMessageException, AccountNotFoundException {
-		Optional<Account> accounts = accountRepository.findByAccountId(id);
+	public AccountDTO getAccountById(long idOrAccountNumber) throws NoSuchMessageException, AccountNotFoundException {
+		Optional<Account> accounts = accountRepository.findByAccountId(idOrAccountNumber);
+		if (accounts.isEmpty()) {
+			accounts = accountRepository.findByAccountNumber(idOrAccountNumber);
+		}
 		if (accounts.isEmpty()) {
 			throw new AccountNotFoundException(messageSource.getMessage("mts.account.not.found.message", null, null));
 		} else {

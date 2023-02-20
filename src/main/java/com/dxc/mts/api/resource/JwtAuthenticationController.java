@@ -19,6 +19,8 @@ import com.dxc.mts.api.dto.JwtResponse;
 import com.dxc.mts.api.service.JwtUserDetailsService;
 import com.dxc.mts.api.util.JwtTokenUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 /**
  * 
  * @author mkhan339
@@ -47,6 +49,7 @@ public class JwtAuthenticationController {
 	 * @return
 	 * @throws Exception
 	 */
+	@Operation(summary = "Api to authenticate the user based on username and password")
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());

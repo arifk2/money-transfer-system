@@ -23,6 +23,8 @@ import com.dxc.mts.api.exception.BankNotFoundException;
 import com.dxc.mts.api.exception.UserNotFoundException;
 import com.dxc.mts.api.service.AddressService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/address")
 public class AddressController {
@@ -34,7 +36,7 @@ public class AddressController {
 	private MessageSource source;
 
 	/**
-	 * This method is created to add /update address for user or bank
+	 * This method is created to add/update address for user or bank
 	 * 
 	 * @param addressDTO holds the information of the accountDTO
 	 * @return
@@ -42,6 +44,7 @@ public class AddressController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@PutMapping("/add-update")
+	@Operation(summary = "Api to add/update address for user or bank")
 	public ResponseEntity<?> saveAddress(@RequestBody AddressDTO addressDTO)
 			throws NoSuchMessageException, ApplicationCustomException {
 		AddressDTO accountDTOResponse = null;
@@ -83,6 +86,7 @@ public class AddressController {
 	 * @throws ApplicationCustomException application specific exception
 	 */
 	@GetMapping("/{id}")
+	@Operation(summary = "Api to get the address information based on the address id")
 	public ResponseEntity<?> getAddress(@PathVariable long id)
 			throws NoSuchMessageException, ApplicationCustomException {
 		AddressDTO addressDTOResponse;
@@ -109,6 +113,7 @@ public class AddressController {
 	 * @return response entity object
 	 */
 	@GetMapping
+	@Operation(summary = "Api to get list of addresses")
 	public ResponseEntity<?> getAddress() {
 		final List<AddressDTO> addressDTOResponse = addressService.getAddress();
 		if (addressDTOResponse != null) {

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,9 +39,11 @@ public class Bank {
 	@Column(name = "IFSC_CODE")
 	private String ifscCode;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "bank")
 	private List<Account> accounts;
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "bank")
 	private Address address;
 

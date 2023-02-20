@@ -11,7 +11,7 @@ import com.dxc.mts.api.model.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-	public Account findByAccountNumber(Long accountNumber);
+	public Optional<Account> findByAccountNumber(Long accountNumber);
 
 	public Optional<Account> findByAccountId(long id);
 
