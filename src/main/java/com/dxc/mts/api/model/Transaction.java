@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +35,9 @@ public class Transaction {
 	@Column(name = "TX_TYPE")
 	private String transactionType;
 
+	@Column(name = "TRANSFER_TYPE")
+	private String transferType;
+
 	@Column(name = "TX_AMOUNT")
 	private Double transactionAmount;
 
@@ -50,12 +55,17 @@ public class Transaction {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date transactionTimestamp;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "FK_ACCOUNT")
 	private Account account;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "FK_USER")
 	private User user;
+
+	@Column(name = "COMMENTS")
+	private String comments;
 
 }

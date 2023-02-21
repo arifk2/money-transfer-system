@@ -17,7 +17,10 @@ public enum BaseAppConstants {
 	SAVINGS("SAVINGS"), 
 	CURRENT("CURRENT"),
 	AUTHORIZATION("Authorization"), 
-	BEARER("Bearer ");
+	BEARER("Bearer "),
+	SUCCESS("SUCCESS"),
+	DEBIT("DEBIT"),
+	CREDIT("CREDIT");
 
 	private String value;
 
