@@ -1,8 +1,11 @@
 package com.dxc.mts.api.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -10,9 +13,14 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Service;
 
 import com.dxc.mts.api.dao.TransactionRepository;
+import com.dxc.mts.api.dao.UserRepository;
 import com.dxc.mts.api.dto.StatementDTO;
+import com.dxc.mts.api.enums.BaseAppConstants;
 import com.dxc.mts.api.exception.StatementNotFoundException;
+import com.dxc.mts.api.exception.UserNotFoundException;
 import com.dxc.mts.api.model.Transaction;
+import com.dxc.mts.api.model.User;
+import com.dxc.mts.api.util.Utility;
 
 @Service
 public class StatementServiceImpl implements StatementService {
@@ -22,6 +30,9 @@ public class StatementServiceImpl implements StatementService {
 
 	@Autowired
 	private MessageSource messageSource;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	public List<StatementDTO> getTopTenTransaction(Long userId)
@@ -38,18 +49,47 @@ public class StatementServiceImpl implements StatementService {
 	}
 
 	@Override
-	public List<StatementDTO> getCurrentMonthTransaction(Date transactionDate) {
-		return null;
+	public List<StatementDTO> getMonthTransaction(Date currentMonth, Long userId)
+			throws NoSuchMessageException, StatementNotFoundException {
+		int month = Utility.getMonthValue(currentMonth);
+		List<Transaction> monthTransaction = transactionRepository.findMonthTransaction(month, userId);
+		if (monthTransaction == null || monthTransaction.isEmpty()) {
+			throw new StatementNotFoundException(messageSource.getMessage("mts.tx.not.found.message", null, null));
+		}
+		List<StatementDTO> listStatementDTOs = new LinkedList<>();
+		for (Transaction transaction : monthTransaction) {
+			listStatementDTOs.add(new StatementDTO(transaction));
+		}
+		return listStatementDTOs;
 	}
 
 	@Override
-	public List<StatementDTO> getTransactionByDateRange(Date toDate, Date fromDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<StatementDTO> getTransactionByDateRange(Date toDate, Date fromDate, Long userId)
+			throws NoSuchMessageException, StatementNotFoundException, ParseException, UserNotFoundException {
+
+		Optional<User> user = userRepository.findById(userId);
+		if (user.isEmpty()) {
+			throw new UserNotFoundException(messageSource.getMessage("mts.user.not.found.message", null, null));
+		}
+		toDate = new SimpleDateFormat(BaseAppConstants.YYYY_MM_DD.getValue())
+				.parse(Utility.dateToStringIn_YYYY_MM_DD(toDate));
+		fromDate = new SimpleDateFormat(BaseAppConstants.YYYY_MM_DD.getValue())
+				.parse(Utility.dateToStringIn_YYYY_MM_DD(fromDate));
+
+		List<Transaction> transactionList = transactionRepository.findByTransactionDateBetweenAndUser(toDate, fromDate,
+				user.get());
+		if (transactionList == null || transactionList.isEmpty()) {
+			throw new StatementNotFoundException(messageSource.getMessage("mts.tx.not.found.message", null, null));
+		}
+		List<StatementDTO> listStatementDTOs = new LinkedList<>();
+		for (Transaction transaction : transactionList) {
+			listStatementDTOs.add(new StatementDTO(transaction));
+		}
+		return listStatementDTOs;
 	}
 
 	@Override
-	public List<StatementDTO> getLastTransaction(Date transactionDate, int month) {
+	public List<StatementDTO> getLastMonthTransaction(Date transactionDate, int month) {
 		// TODO Auto-generated method stub
 		return null;
 	}

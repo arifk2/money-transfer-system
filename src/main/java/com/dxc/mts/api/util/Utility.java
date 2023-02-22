@@ -3,6 +3,7 @@ package com.dxc.mts.api.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -291,5 +292,28 @@ public class Utility {
 			return sdf.format(timeInMilise);
 		}
 		return null;
+	}
+
+	/**
+	 * This method is created to get the month value in integer
+	 * 
+	 * @param date holds the information of the date
+	 * @return month value in integer
+	 */
+	public static int getMonthValue(final Date date) {
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int month = localDate.getMonthValue();
+		return month;
+	}
+
+	public static Date convertStringToDate(String stringDate) throws ParseException {
+		Date date = new SimpleDateFormat(BaseAppConstants.MM_DD_YYYY.getValue()).parse(stringDate);
+		return date;
+	}
+
+	public static String dateToStringIn_YYYY_MM_DD(Date date) {
+		DateFormat dateFormat = new SimpleDateFormat(BaseAppConstants.YYYY_MM_DD.getValue());
+		String strDate = dateFormat.format(date);
+		return strDate;
 	}
 }
