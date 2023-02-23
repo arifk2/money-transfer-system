@@ -18,17 +18,17 @@ Between date range
  * */
 public interface StatementService {
 
-	public List<StatementDTO> getTopTenTransaction(Long userId) throws StatementNotFoundException;
+  public List<StatementDTO> getTopTenTransaction(Long userId) throws StatementNotFoundException;
 
-	// current month or any month transaction
-	public List<StatementDTO> getMonthTransaction(Date currentMonth, Long userId)
-			throws NoSuchMessageException, StatementNotFoundException;
+  // current month or any month transaction
+  public List<StatementDTO> getMonthTransaction(Date currentMonth, Long userId) throws NoSuchMessageException, StatementNotFoundException;
 
-	// query param to date and from date
-	public List<StatementDTO> getTransactionByDateRange(Date toDate, Date fromDate, Long userId)
-			throws NoSuchMessageException, StatementNotFoundException, ParseException, UserNotFoundException;
+  // query param to date and from date
+  public List<StatementDTO> getTransactionByDateRange(Date toDate, Date fromDate, Long userId)
+      throws NoSuchMessageException, StatementNotFoundException, ParseException, UserNotFoundException;
 
-	// and last month, last 3 month
-	public List<StatementDTO> getLastMonthTransaction(Date transactionDate, int month);
+  // and last month, last 3 month
+  public List<StatementDTO> getLastMonthTransaction(Date currentDate, int lastMonth, Long userId)
+      throws NoSuchMessageException, StatementNotFoundException, ParseException, UserNotFoundException;
 
 }

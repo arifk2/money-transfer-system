@@ -143,4 +143,40 @@ public class StatementController {
           source.getMessage("mts.user.not.found.message", null, null)), HttpStatus.NOT_FOUND);
     }
   }
+
+  /**
+   * This api is created to get last month Transactions based on provided lastMonth(number of back month)
+   * 
+   * @param lastMonth
+   *          holds the information of the number of back month
+   * @param userId
+   *          holds the information of the user id
+   * @return list of transactions
+   */
+  @GetMapping("/last/{userId}")
+  @Operation(summary = "Api to get last month Transactions based on provided lastMonth(number of back month)")
+  public ResponseEntity<?> getLastMonthTransaction(@RequestParam("lastMonth") int lastMonth, @PathVariable("userId") Long userId) {
+    try {
+
+      Date currentDate = new Date();
+      List<StatementDTO> statementResponse = statementService.getLastMonthTransaction(currentDate, lastMonth, userId);
+      if (statementResponse != null) {
+        return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(), source.getMessage("mts.success.message", null, null), statementResponse),
+            HttpStatus.OK);
+      } else {
+        return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(), SecurityError.OPERATION_FAILED.getDescription(), null),
+            HttpStatus.BAD_REQUEST);
+      }
+    } catch (StatementNotFoundException e) {
+      return new ResponseEntity<Object>(new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
+          source.getMessage("mts.tx.not.found.message", null, null)), HttpStatus.NOT_FOUND);
+    } catch (ParseException e) {
+      return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(), SecurityError.OPERATION_FAILED.getDescription(),
+          source.getMessage("mts.tx.invalid.request.message", null, null)), HttpStatus.BAD_REQUEST);
+    } catch (UserNotFoundException e) {
+      return new ResponseEntity<Object>(new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
+          source.getMessage("mts.user.not.found.message", null, null)), HttpStatus.NOT_FOUND);
+    }
+  }
+
 }
