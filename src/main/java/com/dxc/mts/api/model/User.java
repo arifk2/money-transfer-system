@@ -28,40 +28,47 @@ import lombok.NoArgsConstructor;
 @Entity(name = "USERS")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "USER_ID")
-	private Long userId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "USER_ID")
+  private Long userId;
 
-	@Column(name = "USERNAME")
-	private String username;
+  @Column(name = "USERNAME")
+  private String username;
 
-	@Column(name = "PASSWORD")
-	private String password;
+  @Column(name = "PASSWORD")
+  private String password;
 
-	@Column(name = "EMAIL_ADDRESS")
-	private String emailAddress;
+  @Column(name = "EMAIL_ADDRESS")
+  private String emailAddress;
 
-	@Column(name = "PHONE_NUMBER")
-	private String phoneNumber;
+  @Column(name = "PHONE_NUMBER")
+  private String phoneNumber;
 
-	@JsonIgnore
-	@JsonInclude(Include.NON_NULL)
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<Account> accounts;
+  @JsonIgnore
+  @JsonInclude(Include.NON_NULL)
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  private List<Account> accounts;
 
-	@JsonIgnore
-	@JsonInclude(Include.NON_NULL)
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-	private Address address;
+  @JsonIgnore
+  @JsonInclude(Include.NON_NULL)
+  @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+  private Address address;
 
-	@JsonIgnore
-	@JsonInclude(Include.NON_NULL)
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<EventLog> eventLog;
+  @JsonIgnore
+  @JsonInclude(Include.NON_NULL)
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  private List<EventLog> eventLog;
 
-	@JsonIgnore
-	@JsonInclude(Include.NON_NULL)
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-	private List<Transaction> transactions;
+  @JsonIgnore
+  @JsonInclude(Include.NON_NULL)
+  @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+  private List<Transaction> transactions;
+
+  @Override
+  public String toString() {
+    return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", emailAddress=" + emailAddress + ", phoneNumber=" + phoneNumber
+        + "]";
+  }
+
 }
