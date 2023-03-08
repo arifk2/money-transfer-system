@@ -11,24 +11,24 @@ public class JwtRequest implements Serializable {
 
 	private static final long serialVersionUID = -8111550775276415409L;
 
-	private String username;
+	private String emailAddress;
 	private String password;
 
 	public JwtRequest() {
 
 	}
 
-	public JwtRequest(String username, String password) {
-		this.setUsername(username);
-		this.setPassword(password);
+	public JwtRequest(String emailAddress, String password) {
+		this.emailAddress = emailAddress;
+		this.password = password;
 	}
 
-	public String getUsername() {
-		return this.username;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	public String getPassword() {

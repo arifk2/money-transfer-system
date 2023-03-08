@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dxc.mts.api.dao.UserDTO;
 import com.dxc.mts.api.dto.BaseResponse;
 import com.dxc.mts.api.enums.SecurityError;
 import com.dxc.mts.api.exception.ApplicationCustomException;
@@ -126,6 +128,28 @@ public class UserController {
 			if (userResponse != null) {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
 						source.getMessage("mts.update.message", null, null), userResponse), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
+						SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.BAD_REQUEST);
+			}
+		} catch (UserNotFoundException e) {
+			return new ResponseEntity<Object>(
+					new BaseResponse(HttpStatus.NOT_FOUND.value(), SecurityError.OPERATION_FAILED.getDescription(),
+							source.getMessage("mts.user.not.found.message", null, null)),
+					HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping("/user")
+	@Operation(summary = "Api to get user details based on email address")
+	public ResponseEntity<?> getUserByEmail(@RequestParam(name = "email") String emailAddress)
+			throws NoSuchMessageException, ApplicationCustomException {
+		UserDTO userDTOResponse;
+		try {
+			userDTOResponse = userService.findByEmailAddress(emailAddress);
+			if (userDTOResponse != null) {
+				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
+						source.getMessage("mts.success.message", null, null), userDTOResponse), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
 						SecurityError.OPERATION_FAILED.getDescription(), null), HttpStatus.BAD_REQUEST);

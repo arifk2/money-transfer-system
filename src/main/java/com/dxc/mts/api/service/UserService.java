@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.NoSuchMessageException;
 
+import com.dxc.mts.api.dao.UserDTO;
 import com.dxc.mts.api.exception.UserNotFoundException;
 import com.dxc.mts.api.model.User;
 
@@ -14,9 +15,9 @@ import com.dxc.mts.api.model.User;
  */
 public interface UserService {
 
-	public User saveUser(User user);
+	public User saveUser(User user) throws NoSuchMessageException;
 
-	public User findByEmailAddress(String emailAddress);
+	public UserDTO findByEmailAddress(String emailAddress) throws NoSuchMessageException, UserNotFoundException;
 
 	public User getUserById(long id) throws NoSuchMessageException, UserNotFoundException;
 

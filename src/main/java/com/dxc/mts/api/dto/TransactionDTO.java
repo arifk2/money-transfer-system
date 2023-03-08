@@ -13,8 +13,8 @@ public class TransactionDTO {
 
 	private Long transactionID;
 	private Long userId;
-	private Long toAccountId;
-	private Long fromAccountId;
+	private Long toAccountNumber;
+	private Long fromAccountNumber;
 	private Double transactionAmount;
 	private String transactionType;
 	private Date transactionDate;
@@ -22,11 +22,11 @@ public class TransactionDTO {
 	private String comments;
 	private String status;
 
-	public TransactionDTO(Transaction transaction, Long fromAccountId, String status) {
+	public TransactionDTO(Transaction transaction, Long fromAccountNumber, String status) {
 		this.transactionID = transaction.getTransactionId();
 		this.userId = transaction.getUser().getUserId();
-		this.toAccountId = transaction.getAccount().getAccountId();
-		this.fromAccountId = fromAccountId;
+		this.toAccountNumber = transaction.getAccount().getAccountNumber();
+		this.fromAccountNumber = fromAccountNumber;
 		this.transactionAmount = transaction.getTransactionAmount();
 		this.transactionType = transaction.getTransactionType();
 		this.transactionDate = transaction.getTransactionDate();

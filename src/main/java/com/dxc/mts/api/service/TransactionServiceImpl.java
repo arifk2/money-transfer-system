@@ -35,16 +35,16 @@ public class TransactionServiceImpl implements TransactionService {
 	@Transactional
 	public TransactionDTO createTransaction(TransactionDTO transactionDTO)
 			throws AccountNotFoundException, NoSuchMessageException, InvalidAmountException {
-		Optional<Account> toAccountExist = accountRepository.findById(transactionDTO.getToAccountId());
-		Optional<Account> fromAccountExist = accountRepository.findById(transactionDTO.getFromAccountId());
+		Optional<Account> toAccountExist = accountRepository.findByAccountNumber(transactionDTO.getToAccountNumber());
+		Optional<Account> fromAccountExist = accountRepository.findByAccountNumber(transactionDTO.getFromAccountNumber());
 
-		Transaction debitTransaction = new Transaction();
-		debitTransaction.setTransactionType(transactionDTO.getTransactionType());
-		debitTransaction.setTransactionAmount(transactionDTO.getTransactionAmount());
-		debitTransaction.setTransactionTimestamp(new Date());
-		debitTransaction.setTransactionDate(new Date());
-		debitTransaction.setComments(transactionDTO.getComments());
-		debitTransaction.setTransferType(BaseAppConstants.DEBIT.getValue());
+		Transaction creditTransaction = new Transaction();
+		creditTransaction.setTransactionType(transactionDTO.getTransactionType());
+		creditTransaction.setTransactionAmount(transactionDTO.getTransactionAmount());
+		creditTransaction.setTransactionTimestamp(new Date());
+		creditTransaction.setTransactionDate(new Date());
+		creditTransaction.setComments(transactionDTO.getComments());
+		creditTransaction.setTransferType(BaseAppConstants.CREDIT.getValue());
 
 		if (toAccountExist.isEmpty() || fromAccountExist.isEmpty()) {
 			throw new AccountNotFoundException(
@@ -59,38 +59,38 @@ public class TransactionServiceImpl implements TransactionService {
 		if (transactionDTO.getTransactionAmount() == 0 || openingToBalance < transactionDTO.getTransactionAmount()) {
 			throw new InvalidAmountException(messageSource.getMessage("mts.tx.invalid.amount", null, null));
 		}
-		debitTransaction.setOpeningBalance(openingToBalance);
+		creditTransaction.setOpeningBalance(openingToBalance);
 
-		Transaction creditTransaction = new Transaction();
-		creditTransaction.setTransactionType(transactionDTO.getTransactionType());
-		creditTransaction.setTransactionAmount(transactionDTO.getTransactionAmount());
-		creditTransaction.setTransactionTimestamp(new Date());
-		creditTransaction.setTransactionDate(new Date());
-		creditTransaction.setOpeningBalance(openingFromBalance);
-		creditTransaction.setComments(transactionDTO.getComments());
-		creditTransaction.setTransferType(BaseAppConstants.CREDIT.getValue());
+		Transaction debitTransaction = new Transaction();
+		debitTransaction.setTransactionType(transactionDTO.getTransactionType());
+		debitTransaction.setTransactionAmount(transactionDTO.getTransactionAmount());
+		debitTransaction.setTransactionTimestamp(new Date());
+		debitTransaction.setTransactionDate(new Date());
+		debitTransaction.setOpeningBalance(openingFromBalance);
+		debitTransaction.setComments(transactionDTO.getComments());
+		debitTransaction.setTransferType(BaseAppConstants.DEBIT.getValue());
 
-		double closingToBalance = openingToBalance - transactionDTO.getTransactionAmount();
+		double closingToBalance = openingToBalance + transactionDTO.getTransactionAmount();
 		toAccount.setAvailableBalance(closingToBalance);
-		debitTransaction.setClosingBalance(closingToBalance);
+		creditTransaction.setClosingBalance(closingToBalance);
 
-		double closingFromBalance = openingFromBalance + transactionDTO.getTransactionAmount();
+		double closingFromBalance = openingFromBalance - transactionDTO.getTransactionAmount();
 		fromAccount.setAvailableBalance(closingFromBalance);
-		creditTransaction.setClosingBalance(closingFromBalance);
+		debitTransaction.setClosingBalance(closingFromBalance);
 
 		toAccount = accountRepository.save(toAccount);
 		fromAccount = accountRepository.save(fromAccount);
 
-		debitTransaction.setAccount(toAccount);
-		creditTransaction.setAccount(fromAccount);
+		creditTransaction.setAccount(toAccount);
+		debitTransaction.setAccount(fromAccount);
 
-		debitTransaction.setUser(toAccount.getUser());
-		creditTransaction.setUser(fromAccount.getUser());
+		creditTransaction.setUser(toAccount.getUser());
+		debitTransaction.setUser(fromAccount.getUser());
 
-		debitTransaction = transactionRepository.save(debitTransaction);
-		transactionRepository.save(creditTransaction);
+		creditTransaction = transactionRepository.save(creditTransaction);
+		transactionRepository.save(debitTransaction);
 
-		return new TransactionDTO(debitTransaction, transactionDTO.getFromAccountId(),
+		return new TransactionDTO(creditTransaction, transactionDTO.getFromAccountNumber(),
 				BaseAppConstants.SUCCESS.getValue());
 	}
 

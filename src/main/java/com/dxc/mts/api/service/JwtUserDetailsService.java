@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.dxc.mts.api.dao.UserDTO;
+import com.dxc.mts.api.exception.UserNotFoundException;
+
 /**
  * 
  * @author mkhan339
@@ -26,11 +29,17 @@ public class JwtUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
-		com.dxc.mts.api.model.User user = userService.findByEmailAddress(emailAddress);
-		if (user == null) {
+		UserDTO userDTO = null;
+		try {
+			userDTO = userService.findByEmailAddress(emailAddress);
+			if (userDTO == null) {
+				throw new UsernameNotFoundException(
+						messageSource.getMessage("mts.user.not.found.message", null, null) + emailAddress);
+			}
+		} catch (UserNotFoundException e) {
 			throw new UsernameNotFoundException(
 					messageSource.getMessage("mts.user.not.found.message", null, null) + emailAddress);
 		}
-		return new User(user.getEmailAddress(), user.getPassword(), new ArrayList<>());
+		return new User(userDTO.getEmailAddress(), userDTO.getPassword(), new ArrayList<>());
 	}
 }

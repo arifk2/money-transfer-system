@@ -22,6 +22,8 @@ public class StatementDTO {
 	private Long accountId;
 	private Long userId;
 	private String comments;
+	private Long accountNumber;
+	
 
 	public StatementDTO(Transaction transaction) {
 		this.transactionId = transaction.getTransactionId();
@@ -35,6 +37,22 @@ public class StatementDTO {
 		this.userId = transaction.getUser().getUserId();
 		this.comments = transaction.getComments();
 		this.transferType = transaction.getTransferType();
+	}
+	
+	public StatementDTO(Transaction transaction, AccountDTO accountDTO) {
+		this.transactionId = transaction.getTransactionId();
+		this.transactionType = transaction.getTransactionType();
+		this.transactionAmount = transaction.getTransactionAmount();
+		this.openingBalance = transaction.getOpeningBalance();
+		this.closingBalance = transaction.getClosingBalance();
+		this.transactionDate = transaction.getTransactionDate();
+		this.transactionTimestamp = transaction.getTransactionTimestamp();
+		this.accountId = transaction.getAccount().getAccountId();
+		this.userId = transaction.getUser().getUserId();
+		this.comments = transaction.getComments();
+		this.transferType = transaction.getTransferType();
+		
+		this.accountNumber = accountDTO.getAccountNumber();
 	}
 
 }

@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -36,6 +38,7 @@ public class Address {
 	@Column(name = "PINCODE")
 	private Long pinCode;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "FK_USER")
 	private User user;
