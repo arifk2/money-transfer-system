@@ -56,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
 		double openingToBalance = toAccount.getAvailableBalance();
 		double openingFromBalance = fromAccount.getAvailableBalance();
 
-		if (transactionDTO.getTransactionAmount() == 0 || openingToBalance < transactionDTO.getTransactionAmount()) {
+		if (transactionDTO.getTransactionAmount() == 0 || openingFromBalance < transactionDTO.getTransactionAmount()) {
 			throw new InvalidAmountException(messageSource.getMessage("mts.tx.invalid.amount", null, null));
 		}
 		creditTransaction.setOpeningBalance(openingToBalance);
