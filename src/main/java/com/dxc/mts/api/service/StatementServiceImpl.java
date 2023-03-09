@@ -12,7 +12,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Service;
 
-import com.dxc.mts.api.dao.AccountRepository;
 import com.dxc.mts.api.dao.TransactionRepository;
 import com.dxc.mts.api.dao.UserRepository;
 import com.dxc.mts.api.dto.AccountDTO;
@@ -20,7 +19,6 @@ import com.dxc.mts.api.dto.StatementDTO;
 import com.dxc.mts.api.enums.BaseAppConstants;
 import com.dxc.mts.api.exception.StatementNotFoundException;
 import com.dxc.mts.api.exception.UserNotFoundException;
-import com.dxc.mts.api.model.Account;
 import com.dxc.mts.api.model.Transaction;
 import com.dxc.mts.api.model.User;
 import com.dxc.mts.api.util.Utility;
