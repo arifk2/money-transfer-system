@@ -21,7 +21,8 @@ public enum BaseAppConstants {
 	BEARER("Bearer "),
 	SUCCESS("SUCCESS"),
 	DEBIT("DEBIT"),
-	CREDIT("CREDIT");
+	CREDIT("CREDIT"),
+	LOGIN("LOGIN");
 
 	private String value;
 

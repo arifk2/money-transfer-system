@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dxc.mts.api.dto.BaseResponse;
 import com.dxc.mts.api.dto.JwtRequest;
 import com.dxc.mts.api.dto.JwtResponse;
+import com.dxc.mts.api.service.EventLogService;
 import com.dxc.mts.api.service.JwtUserDetailsService;
 import com.dxc.mts.api.util.JwtTokenUtil;
 
@@ -44,6 +45,9 @@ public class JwtAuthenticationController {
 	@Autowired
 	private MessageSource messageSource;
 
+	@Autowired
+	private EventLogService eventLogService;
+
 	/**
 	 * This method is created generate from authenticated token
 	 * 
@@ -60,6 +64,9 @@ public class JwtAuthenticationController {
 			final UserDetails userDetails = userDetailsService
 					.loadUserByUsername(authenticationRequest.getEmailAddress());
 			final String token = jwtTokenUtil.generateToken(userDetails);
+			if (token != null) {
+				eventLogService.saveLoginEvent(userDetails.getUsername());
+			}
 			return new ResponseEntity<Object>(
 					new BaseResponse(HttpStatus.OK.value(), messageSource.getMessage("mts.success.message", null, null),
 							new JwtResponse(token, userDetails.getUsername())),
